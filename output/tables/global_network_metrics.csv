@@ -1,0 +1,2 @@
+num_nodes,num_edges,average_degree,density,avg_clustering_coeff,transitivity,gcc_nodes,gcc_fraction,num_components,avg_path_length_gcc,diameter_gcc,degree_assortativity,er_probability_p,er_clustering_simulated_mean,er_clustering_simulated_std,er_clustering_theory,er_path_length_simulated_mean,er_path_length_simulated_std,er_path_length_theory,clustering_ratio_gamma,path_length_ratio_lambda,small_world_index_sigma
+87,1247,28.667,0.3333,0.635,0.65,83,0.954,5,1.7161,4,-0.0199,0.3333,0.334,0.0077,0.3333,1.6669,0.0074,1.3308,1.9015,1.0295,1.8469
