@@ -12,6 +12,7 @@ import networkx as nx
 import matplotlib.pyplot as plt
 import seaborn as sns
 from src.preprocessing import THEME_COLORS
+from src.model1_student_network import percolation_analysis
 
 
 def compute_question_correlation(df_numeric):
@@ -21,7 +22,7 @@ def compute_question_correlation(df_numeric):
     return df_numeric.corr(method="pearson")
 
 
-def build_question_network(df_corr, df_metadata, threshold=0.35):
+def build_question_network(df_corr, df_metadata, threshold=0.25):
     """
     Constructs a graph where nodes are questions and edges exist if correlation >= threshold.
     """
@@ -182,7 +183,54 @@ def plot_question_network(G, df_q_metrics, output_path):
     plt.close()
 
 
-def run_model2_pipeline(df_numeric, df_metadata, output_dir, threshold=0.35):
+def plot_question_percolation(df_percolation, output_path):
+    """
+    Plots the percolation curves (GCC fraction, density, clustering, isolates)
+    for the question-correlation network, mirroring the Model 1 percolation figure.
+    """
+    fig, ax1 = plt.subplots(figsize=(8.5, 5))
+
+    color1 = "#1f77b4"
+    color2 = "#d95f02"
+    color3 = "#2ca02c"
+
+    ax1.set_xlabel(r"Correlation Threshold ($\tau$)", fontweight="bold")
+    ax1.set_ylabel("Fraction / Value", color=color1, fontweight="bold")
+    l1 = ax1.plot(df_percolation["threshold"], df_percolation["gcc_fraction"],
+                  marker="o", color=color1, label="Giant Component Fraction (GCC)", linewidth=2)
+    l2 = ax1.plot(df_percolation["threshold"], df_percolation["density"],
+                  marker="s", linestyle="--", color=color2, label="Graph Density", linewidth=1.8)
+    l3 = ax1.plot(df_percolation["threshold"], df_percolation["avg_clustering"],
+                  marker="^", linestyle="-.", color=color3, label="Avg. Clustering Coeff. (C)", linewidth=1.8)
+    ax1.tick_params(axis="y", labelcolor=color1)
+    ax1.set_ylim(-0.05, 1.05)
+
+    # Mark the chosen threshold tau*_Q = 0.25
+    ax1.axvline(0.25, color="#c0392b", linestyle=":", linewidth=1.6)
+    ax1.text(0.255, 0.06, r"$\tau^{*}_{Q}=0.25$", color="#c0392b", fontsize=9, fontweight="bold")
+
+    # Secondary axis for number of isolates
+    ax2 = ax1.twinx()
+    color_iso = "#7570b3"
+    ax2.set_ylabel("Number of Isolated Nodes", color=color_iso, fontweight="bold")
+    l4 = ax2.plot(df_percolation["threshold"], df_percolation["isolates"],
+                  marker="x", color=color_iso, label="Isolated Nodes", linewidth=1.8, linestyle=":")
+    ax2.tick_params(axis="y", labelcolor=color_iso)
+    ax2.grid(False)
+
+    # Combine legends
+    lines = l1 + l2 + l3 + l4
+    labels = [l.get_label() for l in lines]
+    ax1.legend(lines, labels, loc="center left", frameon=True, framealpha=0.9)
+
+    plt.title(r"Percolation Analysis: Question Network Connectivity vs. Threshold ($\tau$)",
+              fontweight="bold", pad=12)
+    fig.tight_layout()
+    plt.savefig(output_path)
+    plt.close()
+
+
+def run_model2_pipeline(df_numeric, df_metadata, output_dir, threshold=0.25):
     """
     Executes the full end-to-end pipeline for Model 2 (Question Concept Network).
     """
@@ -196,15 +244,22 @@ def run_model2_pipeline(df_numeric, df_metadata, output_dir, threshold=0.35):
     # 1. Correlation Matrix
     df_corr = compute_question_correlation(df_numeric)
 
-    # 2. Build Question Network
+    # 2. Percolation Analysis on the question-correlation matrix
+    #    (reuses percolation_analysis() from Model 1 — it operates on any similarity matrix)
+    print("Performing percolation threshold sweep on the question-correlation matrix...")
+    df_percolation = percolation_analysis(df_corr, output_dir=None)
+    df_percolation.to_csv(os.path.join(tables_dir, "question_percolation_analysis.csv"), index=False)
+    plot_question_percolation(df_percolation, os.path.join(figures_dir, "fig7_question_percolation_analysis.png"))
+
+    # 3. Build Question Network
     print(f"Constructing question concept network at threshold tau={threshold}...")
     G_q = build_question_network(df_corr, df_metadata, threshold=threshold)
 
-    # 3. Metrics Computation
+    # 4. Metrics Computation
     df_q_metrics = compute_question_metrics(G_q, df_numeric, df_metadata)
     df_q_metrics.to_csv(os.path.join(tables_dir, "question_centralities.csv"), index=False)
 
-    # 4. Generate Visualizations
+    # 5. Generate Visualizations
     print("Generating Model 2 figures...")
     plot_question_correlation_heatmap(df_corr, df_metadata, os.path.join(figures_dir, "fig5_question_correlation_heatmap.png"))
     plot_question_network(G_q, df_q_metrics, os.path.join(figures_dir, "fig6_question_thematic_network.png"))

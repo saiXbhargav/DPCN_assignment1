@@ -127,7 +127,10 @@ $$\sigma = \frac{\gamma}{\lambda} = \frac{C_{\text{empirical}} / C_{\text{ER}}}{
 A network is strictly classified as **Small-World** if $\gamma \gg 1$ and $\lambda \approx 1$, yielding $\sigma > 1$.
 
 ### 4.4 Model 2: Question–Question Concept Network Formulation
-Let $V_Q = \{q_1, q_2, \dots, q_{60}\}$ represent the questions. Edges are weighted by cross-student response correlation $r_{q_a, q_b}$. An edge exists if $r_{q_a, q_b} \ge 0.35$. Node sizes are proportional to betweenness centrality, highlighting questions that bridge distinct domains.
+Let $V_Q = \{q_1, q_2, \dots, q_{60}\}$ represent the questions. Edges are weighted by cross-student response correlation $r_{q_a, q_b}$, and node sizes are proportional to betweenness centrality, highlighting questions that bridge distinct domains.
+
+#### Threshold Percolation Analysis
+Rather than reusing Model 1's cutoff by default, the question network's threshold was justified by an independent percolation sweep over the $60 \times 60$ correlation matrix (Fig 7), applying the same selection rule as Section 4.1 — the largest $\tau$ that still retains more than $95\%$ of nodes in the Giant Connected Component (GCC). GCC coverage holds at $96.7\%$ through $\tau = 0.25$, then drops to $88.3\%$ at $\tau = 0.30$ and $78.3\%$ at $\tau = 0.35$. Since $\tau = 0.25$ is the largest threshold preserving $>95\%$ coverage, we select $\tau^*_Q = 0.25$. This is deliberately more permissive than Model 1's $\tau^* = 0.35$: the question network exhibits weaker average pairwise correlations (visible as the paler off-diagonal blocks in Fig 5), so a stricter cutoff would fragment the concept network and discard genuine inter-thematic structure. An edge therefore exists if $r_{q_a, q_b} \ge \tau^*_Q = 0.25$, yielding a network of $60$ nodes and $470$ edges.
 
 ---
 
@@ -173,6 +176,10 @@ Let $V_Q = \{q_1, q_2, \dots, q_{60}\}$ represent the questions. Edges are weigh
 #### Figure 6: Question Concept Network & Inter-Domain Bridges
 ![Figure 6: Question Concept Network](output/figures/fig6_question_thematic_network.png)
 * **Interpretation:** 60-node concept graph colored by domain. Node size corresponds to betweenness centrality. Key bridge questions connecting distinct domains are prominently labelled.
+
+#### Figure 7: Percolation Analysis for the Question Network
+![Figure 7: Question Network Percolation Analysis](output/figures/fig7_question_percolation_analysis.png)
+* **Interpretation:** GCC fraction, graph density, and average clustering are plotted against the correlation threshold $\tau$ for the question network, with the number of isolated nodes on the secondary axis. Coverage remains flat at $96.7\%$ through $\tau = 0.25$ before the giant component fragments sharply ($88.3\%$ at $0.30$, $78.3\%$ at $0.35$). This justifies the selected threshold $\tau^*_Q = 0.25$ (marked), the largest cutoff retaining $>95\%$ of nodes — the same rule used for Model 1 in Fig 1.
 
 ---
 
@@ -261,9 +268,12 @@ The one place the empirical network falls short of the star/ER benchmark is **di
    * **Discussion:** Strong collective consensus on ethical free speech boundaries.
 
 ### 6.4 Inter-Thematic Bridges in the Question Network
-In Model 2, the question with the **single highest betweenness centrality** across the entire survey is:
-* **T12 ($C_B = 0.0788$):** *"Governments should introduce stricter regulations for Artificial Intelligence."*
-* **Significance:** T12 is the critical conceptual bridge linking the **Technology** cluster to the **Society & Ethics** cluster. While other technology questions correlate predominantly within their own technical domain, attitudes toward AI government regulation uniquely determine whether a student's technical optimism aligns with societal governance priorities.
+At the percolation-justified threshold $\tau^*_Q = 0.25$ (Section 4.4), the three questions with the highest betweenness centrality across the survey are:
+* **S07 ($C_B = 0.0563$):** *"Equal opportunities should be prioritized regardless of a person's background."*
+* **E10 ($C_B = 0.0504$):** *"Universities should prioritize innovation and problem-solving over rote learning."*
+* **V11 ($C_B = 0.0460$):** *"Technological innovation is essential for addressing environmental challenges."*
+
+**Significance:** These bridge concepts span Society & Ethics, Education, and Environment, indicating that the connective tissue of the concept network runs through equity, pedagogical philosophy, and the technology–environment nexus rather than through any single technical topic. Notably, **no Technology-domain question appears among the top bridges** at $\tau^*_Q = 0.25$ — the first Technology item, T04, ranks only eighth ($C_B = 0.0352$). This differs from our earlier, now-superseded analysis at $\tau = 0.35$, where **T12 (AI regulation) was the single top bridge** ($C_B = 0.0788$). The change is a deliberate, methodologically driven consequence of adopting the correctly justified threshold: at the sparser $\tau = 0.35$ network more than $20\%$ of nodes fall outside the giant component, so betweenness concentrates on a few low-degree remnants (T12 had degree $6$) and misrepresents the network's true bridging structure. At $\tau^*_Q = 0.25$, which preserves $96.7\%$ node coverage, the bridge questions are higher-degree, better-connected concepts (S07, E10, V11 have degrees $29$, $31$, $22$), giving a more faithful picture of which topics genuinely mediate between thematic domains.
 
 ---
 
@@ -279,4 +289,4 @@ In Model 2, the question with the **single highest betweenness centrality** acro
 ---
 
 ## 8. Conclusion
-By transforming multi-dimensional survey data into complex networks, this study demonstrated that class opinions exhibit **small-world topology**, characterized by tight local echo chambers ($\gamma = 1.90$) bridged by key moderating individuals. The identification of **T12 (AI regulation)** as the dominant thematic bridge highlights that the governance of emerging technologies serves as the linchpin connecting technical optimism to societal and environmental ethics in modern engineering cohorts.
+By transforming multi-dimensional survey data into complex networks, this study demonstrated that class opinions exhibit **small-world topology**, characterized by tight local echo chambers ($\gamma = 1.90$) bridged by key moderating individuals. In the question concept network (at the percolation-justified threshold $\tau^*_Q = 0.25$), the dominant thematic bridges are **S07 (equal opportunities), E10 (innovation over rote learning), and V11 (technology for environmental challenges)**, showing that equity, pedagogical philosophy, and the technology–environment nexus — rather than any single technical topic — form the linchpins connecting technical, societal, educational, and environmental attitudes in modern engineering cohorts.

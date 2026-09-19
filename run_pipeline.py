@@ -31,8 +31,8 @@ def main():
                         help="Output directory for figures and tables")
     parser.add_argument("--tau_student", type=float, default=0.35,
                         help="Similarity threshold for student network (default: 0.35)")
-    parser.add_argument("--tau_question", type=float, default=0.35,
-                        help="Correlation threshold for question network (default: 0.35)")
+    parser.add_argument("--tau_question", type=float, default=0.25,
+                        help="Correlation threshold for question network (default: 0.25)")
     args = parser.parse_args()
 
     print("=================================================================")
