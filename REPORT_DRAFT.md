@@ -92,7 +92,7 @@ Let $V_S = \{s_1, s_2, \dots, s_N\}$ represent the set of $N = 87$ students. Eac
 #### Similarity Metric
 The ideological proximity between student $i$ and student $j$ is quantified using the **Pearson Correlation Coefficient**:
 $$r_{ij} = \frac{\sum_{k=1}^{60} (v_{ik} - \bar{v}_i)(v_{jk} - \bar{v}_j)}{\sqrt{\sum_{k=1}^{60} (v_{ik} - \bar{v}_i)^2} \sqrt{\sum_{k=1}^{60} (v_{jk} - \bar{v}_j)^2}} \in [-1, 1]$$
-Pearson correlation adjusts for personal response baselines (e.g., distinguishing an agreeable student who rates everything $+1$/$+2$ from a discerning student whose responses co-vary selectively).
+Pearson correlation adjusts for personal response baselines (e.g., distinguishing an agreeable student who rates everything $+1$/$+2$ from a discerning student whose responses co-vary selectively). This choice treats the five-point Likert scale as interval (i.e., assumes the psychological distance between "Agree" and "Strongly Agree" equals that between "Neutral" and "Agree"); this is a standard simplification in survey-network analysis, though a strictly ordinal-safe alternative (Spearman rank correlation) would avoid the assumption entirely.
 
 #### Threshold Percolation Analysis
 To transform the continuous similarity matrix into an unweighted/weighted graph without arbitrary heuristics, we performed a **percolation parameter sweep** over $\tau \in [0.10, 0.75]$.
@@ -183,22 +183,22 @@ These students hold opinions that mirror the broad class majority:
 
 | Student ID | Degree ($k_i$) | Degree Centrality | Weighted Strength | Betweenness | Closeness | Cluster |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **114** | 59 | 0.6860 | 28.618 | 0.0189 | 0.7414 | Community 1 |
-| **83** | 56 | 0.6512 | 26.685 | 0.0152 | 0.7227 | Community 2 |
-| **35** | 52 | 0.6047 | 24.443 | 0.0143 | 0.6919 | Community 3 |
-| **110** | 52 | 0.6047 | 24.120 | 0.0118 | 0.6919 | Community 2 |
-| **94** | 50 | 0.5814 | 24.081 | 0.0114 | 0.6811 | Community 1 |
+| **114** | 59 | 0.6860 | 30.327 | 0.0288 | 0.7446 | Community 3 |
+| **55** | 58 | 0.6744 | 28.125 | 0.0192 | 0.7376 | Community 1 |
+| **61** | 56 | 0.6512 | 28.831 | 0.0164 | 0.7173 | Community 4 |
+| **49** | 55 | 0.6395 | 28.448 | 0.0166 | 0.7173 | Community 4 |
+| **70** | 55 | 0.6395 | 26.564 | 0.0255 | 0.7108 | Community 1 |
 
 #### Top 5 "Bridge / Mediator" Students (Highest Betweenness Centrality)
 These students connect distinct ideological factions and prevent network bifurcation:
 
 | Student ID | Betweenness Centrality | Degree ($k_i$) | Closeness | Clustering Coeff. ($C_i$) | Community Role |
 | :---: | :---: | :---: | :---: | :---: | :---: |
-| **90** | **0.0346** | 42 | 0.6358 | 0.6121 | Primary conduit between Comm 1 & Comm 3 |
-| **19** | **0.0307** | 41 | 0.6305 | 0.5390 | Bridge between Comm 1 & Comm 4 |
-| **12** | **0.0232** | 25 | 0.5585 | 0.7300 | Peripheral liaison connecting outliers |
-| **114** | **0.0189** | 59 | 0.7414 | 0.5874 | Central hub with global inter-cluster links |
-| **83** | **0.0152** | 56 | 0.7227 | 0.6045 | Moderating hub between Comm 2 & Comm 4 |
+| **90** | **0.0346** | 52 | 0.6919 | 0.5965 | Primary conduit for Community 2 |
+| **19** | **0.0307** | 41 | 0.6305 | 0.5390 | Primary conduit for Community 1 |
+| **53** | **0.0290** | 48 | 0.6626 | 0.5966 | Secondary bridge, Community 2 |
+| **114** | **0.0288** | 59 | 0.7446 | 0.5698 | Central hub, also top by degree (Community 3) |
+| **41** | **0.0264** | 35 | 0.5923 | 0.6773 | Secondary bridge, Community 2 |
 
 ---
 
@@ -215,9 +215,11 @@ Louvain modularity optimization ($Q = 0.284$) partitioned the student cohort int
    * *Profile:* Overall stance $+1.148$. Highest endorsement of Technology & AI ($+1.173$), but markedly more critical or traditional regarding Education policies ($+0.773$). Enthusiastic about automated tools and AI integration, but skeptical of compulsory attendance or mandatory undergraduate research.
 4. **Community 4: Eco-Centric Reformers ($N = 16$, $18.4\%$)**
    * *Profile:* Overall stance $+1.160$. Highest Environmental conviction of all groups ($+1.508$). Moderate on Technology ($+0.996$), prioritizing green product design, plastics elimination, and corporate carbon accountability over rapid technological disruption.
-5. **Peripheral Isolates (Communities 5–8, $1$ student each):**
-   * *Student 97 (Comm 7):* Marked ideological outlier (overall stance $-0.200$). Strong disagreement with technology pace ($-0.400$) and environmental mandates ($-0.267$).
-   * *Student 85 (Comm 6):* Neutral/skeptical on education ($0.000$) and society ($+0.067$).
+5. **Peripheral Isolates (Communities 5–8, $1$ student each):** Four students correlate below $\tau^* = 0.35$ with every other classmate and therefore form singleton Louvain communities. Isolation cuts both ways here — it includes the single most agreeable respondent in the class alongside its lone dissenter, not just outliers on one end:
+   * *Student 40 (Comm 5):* The most uniformly agreeable respondent in the cohort (overall stance $+1.417$); rates nearly every statement highly, giving a response pattern too flat to correlate strongly with any single peer.
+   * *Student 119 (Comm 6):* Neutral/skeptical on education ($0.000$) and society ($+0.067$).
+   * *Student 120 (Comm 7):* Marked ideological outlier (overall stance $-0.200$). Strong disagreement with technology pace ($-0.400$) and environmental mandates ($-0.267$).
+   * *Student 125 (Comm 8):* A moderate (overall stance $+0.683$), balanced across themes without strong alignment to any dominant camp.
 
 ### 6.2 The Small-World Nature of Class Opinions
 The benchmarking against the Erdős–Rényi model yields profound structural findings:
@@ -225,15 +227,30 @@ The benchmarking against the Erdős–Rényi model yields profound structural fi
 * Meanwhile, the average shortest path length ($L = 1.7161$) remains virtually identical to the random benchmark ($L_{\text{ER}} = 1.6669$, $\lambda = 1.0295$).
 * The resulting **Small-World Index ($\sigma = 1.8469$)** confirms that despite ideological clustering into distinct personas, the class is not deeply polarized into disconnected silos. Ideological information or consensus can diffuse across the entire class in fewer than two degrees of separation.
 
+#### Benchmarking Against Canonical Topologies (Chain & Star)
+To calibrate what "small-world" means in absolute terms, the empirical network is compared against the two extreme reference topologies for a connected graph of $N=87$ nodes, alongside the ER benchmark:
+
+| Topology | Diameter | Avg. Path Length ($L$) | Basis |
+| :--- | :---: | :---: | :--- |
+| **Chain (Path Graph)** | 86 | 29.333 | $L_{\text{chain}} = \frac{N+1}{3}$ — worst case; an opinion would need up to 86 hops to cross the class. |
+| **Star Graph** | 2 | 1.977 | $L_{\text{star}} = \frac{2(N-1)}{N}$ — theoretical best case, achievable only via one universal hub. |
+| **Erdős–Rényi (theoretical)** | — | 1.331 | $L_{\text{ER}} = \ln N / \ln\langle k \rangle$ |
+| **Erdős–Rényi (simulated, 50 runs)** | 2 | 1.667 $\pm$ 0.007 | Empirical mean over the ER ensemble |
+| **Empirical Student Network** | **4** | **1.716** | Observed |
+
+**Interpretation:** The empirical path length ($1.716$) is **$17\times$ shorter** than the chain extreme and nearly matches the star's theoretical best case ($1.977$) and the ER benchmark ($1.667$) — despite no single dominant hub existing (the highest degree centrality observed, student 114, is $0.686$, far below the $\approx 1.0$ a true star hub would have). The class therefore achieves star-like reachability through a *distributed* set of moderately-high-degree "mainstream" students (e.g., 114, 55, 61) rather than one point of failure, which is a structurally healthier configuration than a literal star.
+
+The one place the empirical network falls short of the star/ER benchmark is **diameter**: $4$ hops versus $2$ for both the star and the simulated ER graphs. This is the direct fingerprint of genuine community structure (Louvain $Q = 0.284$): unlike a star or a random graph, a handful of student pairs sitting in weakly-connected corners of different communities must route through one of the identified bridge students (90, 19, 53) to reach each other, costing one extra hop. The diameter is thus capturing the same "ideological distance" that the clustering coefficient detects — expressed as a worst-case hop count rather than a triangle-density ratio.
+
 ### 6.3 Most Divisive vs. Highest Consensus Topics
 
 #### Top Polarizing Questions (Highest Opinion Variance $\sigma^2$)
 1. **E04 (Variance = 1.365):** *"High-quality online learning can effectively complement classroom teaching."*
    * **Discussion:** Demonstrates the sharpest divide in the entire cohort. Students are split between those who value online asynchronous flexibility and those who view it as an inferior substitute for in-person pedagogy.
-2. **E03 (Variance = 1.258):** *"Class attendance should be compulsory for all courses."*
+2. **E03 (Variance = 1.264):** *"Class attendance should be compulsory for all courses."*
    * **Discussion:** Strong polarization between student autonomy advocates and those favoring structured institutional accountability.
-3. **E12 (Variance = 1.065):** *"Artificial intelligence should be integrated into teaching and personalized learning."*
-   * **Discussion:** Pits early adopters against students concerned with academic integrity and depersonalized instruction.
+3. **E02 (Variance = 1.253):** *"Traditional written examinations accurately measure a student's knowledge."*
+   * **Discussion:** The only near-even split in the entire survey (mean $\approx -0.161$, close to neutral): students who still trust standardized written exams as a valid measure of knowledge versus those who see them as an outdated proxy for competence.
 
 #### Top Consensus Questions (Lowest Opinion Variance $\sigma^2$ & High Mean)
 1. **E15 (Mean = +1.713, Variance = 0.254):** *"Continuous learning and skill development are essential throughout one's career."*
