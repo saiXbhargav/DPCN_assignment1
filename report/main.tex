@@ -96,7 +96,7 @@ The repository is organized modularly: pipeline execution is automated by \textt
     \node (m1) [model, below=0.85cm of mat, xshift=-3.2cm, text width=4.6cm] {Model 1: Student Network ($G_S$)\\$\bullet$ Pearson Similarity $r_{ij}$ (87 $\times$ 87)\\$\bullet$ Percolation Sweep: $\tau^*_S = 0.35$\\$\bullet$ $N=87, M=1247, \rho=0.3333$};
     \node (m2) [model, below=0.85cm of mat, xshift=3.2cm, text width=4.6cm] {Model 2: Question Network ($G_Q$)\\$\bullet$ Question Correlation $r_{ab}$ (60 $\times$ 60)\\$\bullet$ Percolation Sweep: $\tau^*_Q = 0.25$\\$\bullet$ $N=60, M=470, \rho=0.2655$};
     
-    \node (m1_eval) [proc, below=0.6cm of m1, text width=4.6cm] {Model 1 Downstream Analysis\\$\bullet$ Erd\H{o}s--R\'enyi Null Model (50 runs)\\$\bullet$ Small-World Index ($\sigma = 1.8469$)\\$\bullet$ Louvain Modularity ($Q = 0.2840$)\\$\bullet$ Centrality Leaders (Hubs \& Bridges)};
+    \node (m1_eval) [proc, below=0.6cm of m1, text width=4.6cm] {Model 1 Downstream Analysis\\$\bullet$ Erd\H{o}s--R\'enyi Null Model (50 runs)\\$\bullet$ Small-World Index ($\sigma = 1.8469$)\\$\bullet$ Louvain Modularity ($Q = 0.1293$)\\$\bullet$ Centrality Leaders (Hubs \& Bridges)};
     \node (m2_eval) [proc, below=0.6cm of m2, text width=4.6cm] {Model 2 Downstream Analysis\\$\bullet$ Thematic Modularity Heatmap\\$\bullet$ Cross-Domain Bridge Questions\\$\bullet$ Polarization vs. Consensus Ranking\\$\bullet$ GCC (58 Qs) + Component \{E02, E03\}};
     
     \draw [arrow] (raw) -- (prep);
@@ -315,7 +315,7 @@ Figure~\ref{fig:question_heatmap} displays the $60 \times 60$ question correlati
 \input{tables/tab3_community_profiles.tex}
 
 \subsection{Community Structure and Thematic Personas}
-Applying weighted Louvain modularity optimization on $G_S$ (\texttt{seed=42}) yields modularity $Q = 0.2840$, partitioning the cohort into \textbf{four primary opinion communities} ($95.40\%$ of students) plus \textbf{four singleton isolates} (Table~\ref{tab:community_profiles} and Figure~\ref{fig:community_question_analysis}a).
+Applying weighted Louvain modularity optimization on $G_S$ (\texttt{seed=42}) yields modularity $Q = 0.1293$, partitioning the cohort into \textbf{four primary opinion communities} ($95.40\%$ of students) plus \textbf{four singleton isolates} (Table~\ref{tab:community_profiles} and Figure~\ref{fig:community_question_analysis}a).
 
 To establish a comprehensive understanding of opinion organization, we conduct a multi-scale analysis combining \textbf{group-level community opinion profiles} (Figure~\ref{fig:community_question_analysis}a) with \textbf{item-level question response dispersion} (Figure~\ref{fig:community_question_analysis}b). While community profiling identifies how structurally partitioned sub-cohorts systematically diverge in their domain-level philosophies (e.g., Techno-Optimists vs. Eco-Centric Reformers), question-wise variance isolates the specific pedagogical and socio-technical policy statements that trigger polarization versus universal consensus across the student body.
 
@@ -360,7 +360,7 @@ Table~\ref{tab:canonical_comparison} benchmarks $G_S$ against extreme graph topo
 
 Empirical path length ($1.716$) is over $17\times$ shorter than a linear chain ($29.333$) and approaches the star graph limit ($1.977$). Unlike a star graph with a single vulnerable hub, the network achieves reachability via a \textbf{distributed core of consensus hubs} (IDs \texttt{114}, \texttt{55}, \texttt{61}). 
 
-The empirical diameter ($\text{diam} = 4$) is twice the random baseline ($\text{diam} = 2$), reflecting \textbf{community modularity ($Q = 0.2840$)}: traversing between peripheral nodes across communities requires routing through intermediate bridge students (IDs \texttt{90}, \texttt{19}, \texttt{53}).
+The empirical diameter ($\text{diam} = 4$) is twice the random baseline ($\text{diam} = 2$), reflecting \textbf{community modularity ($Q = 0.1293$)}: traversing between peripheral nodes across communities requires routing through intermediate bridge students (IDs \texttt{90}, \texttt{19}, \texttt{53}).
 
 % --- Pre-queue Table 5 so it appears cleanly at the top of Page 7 ---
 \input{tables/tab4_question_polarization.tex}
@@ -413,9 +413,9 @@ These findings demonstrate that cross-domain connectivity is anchored by \textbf
 All team members contributed equitably ($33.3\%$ each) to the conceptualization, mathematical formulation, code implementation, figure generation, and report writing for this assignment. The individual task allocation and verified contribution breakdown are structured below:
 
 \begin{description}[noitemsep,topsep=2pt,leftmargin=1.0em]
-    \item[\textbf{Ampilli Sai Venkata Naga Bhargav}] (\textit{2023112014}): Erd\H{o}s--R\'enyi null model simulation ensemble ($N=50$),Small-World Index computation,zero-centered Likert scale mathematical encoding, Model 1 percolation threshold sweep implementation, and Louvain community detection algorithm formulation.
+    \item[\textbf{Ampilli Sai Venkata Naga Bhargav}] (\textit{2023112014}): Erd\H{o}s--R\'enyi null model simulation ensemble ($N=50$), Small-World Index computation, zero-centered Likert scale mathematical encoding, Model 1 percolation threshold sweep implementation, and Louvain community detection algorithm formulation.
     \item[\textbf{Chaitanya Thogata}] (\textit{2023113018}): Model 1 network construction, Pearson similarity formulation, node centrality computations (Degree, Betweenness, Closeness), and consensus hub vs. topological bridge comparative analysis.
-    \item[\textbf{Pasumarthy Deepak}] (\textit{2023101109}): missing-value imputation strategy (median),Survey data ingestion, Model 2 (Question Concept Network and percolation sweep), generation of publication figures, and comprehensive report compilation.
+    \item[\textbf{Pasumarthy Deepak}] (\textit{2023101109}): missing-value imputation strategy (median), Survey data ingestion, Model 2 (Question Concept Network and percolation sweep), generation of publication figures, and comprehensive report compilation.
 \end{description}
 
 % ==============================================================================
@@ -424,7 +424,7 @@ All team members contributed equitably ($33.3\%$ each) to the conceptualization,
 \section{Conclusion}
 \label{sec:conclusion}
 
-In this study, we transformed high-dimensional survey responses into dual complex networks to analyze opinion organization across Technology, Education, Society, and Environment. Through quality filtering ($N=87$) and percolation thresholding ($\tau^*_S = 0.35, \tau^*_Q = 0.25$), we established that the Student Opinion Network exhibits structural properties of \textbf{small-world organization ($\sigma = 1.8469$)}, combining elevated clustering ($\gamma = 1.9015$) with short geodesic paths ($\lambda = 1.0295$). Weighted Louvain community detection ($Q = 0.2840$) identified four primary ideological cohorts connected via a distributed core of consensus hubs and bridge students. Question-level analysis revealed that institutional educational policies constitute the primary axis of cohort polarization, while inter-domain conceptual connectivity is sustained by foundational principles of social equity, educational innovation, and sustainable technology.
+In this study, we transformed high-dimensional survey responses into dual complex networks to analyze opinion organization across Technology, Education, Society, and Environment. Through quality filtering ($N=87$) and percolation thresholding ($\tau^*_S = 0.35, \tau^*_Q = 0.25$), we established that the Student Opinion Network exhibits structural properties of \textbf{small-world organization ($\sigma = 1.8469$)}, combining elevated clustering ($\gamma = 1.9015$) with short geodesic paths ($\lambda = 1.0295$). Weighted Louvain community detection ($Q = 0.1293$) identified four primary ideological cohorts connected via a distributed core of consensus hubs and bridge students. Question-level analysis revealed that institutional educational policies constitute the primary axis of cohort polarization, while inter-domain conceptual connectivity is sustained by foundational principles of social equity, educational innovation, and sustainable technology.
 
 
 \end{document}
